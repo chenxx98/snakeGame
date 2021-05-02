@@ -3,27 +3,25 @@
 
 struct Snake
 {
-	int line;
+	int line; //行、列
 	int list;
 	struct Snake *next;
 
 };
 
-struct Snake *head;
-struct Snake *tail;
-
-
+struct Snake *head; //头节点
+struct Snake *tail; //尾节点
+/* 初始化curses库 */
 void initNcurses()
 {
-		
 	initscr();
 	keypad(stdscr,1);
 }
 
 int SnakeNode(int i,int j)
 {
-      	struct Snake *p;
-        p = head;
+    struct Snake *p;
+    p = head;
 	
 	while(p != NULL){
 	
@@ -47,7 +45,6 @@ void  gameMap()
 			}
 			printw("\n");
 		}
-
 
 		if(line>=0 && line<=19){
 
@@ -84,7 +81,8 @@ void addNode()
 {
 	struct Snake *new = (struct Snake *)malloc(sizeof(struct Snake));
 
-	new->line = tail->line;
+	new->li
+	ne = tail->line;
 	new->list = tail->list+1;
 	new->next = NULL;
 	tail->next= new;
@@ -99,29 +97,19 @@ void initSnake()
 	head->line =2;
 	head->list =2;
 	head->next = NULL;	
-	
-
 	tail = head;
-
 	addNode();
 	addNode();
 	addNode();
 }
 
 int main()
-{
-	
+{	
 	initNcurses();
 	initSnake();
-	gameMap();	
-	
-	
-	
-	
-		
+	gameMap();
+			
 	getch();
 	endwin();
 	return 0;
-
-	
 }

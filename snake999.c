@@ -10,33 +10,29 @@
 #define LINE0 1 
 #define LIST0 1
 
-
 struct Snake
 {
-	int line;
+	int line; //行、列
 	int list;
 	struct Snake *next;
-
 };
 
 struct Snake food ;
 struct Snake *head = NULL;
 struct Snake *tail = NULL;
 int dir;
-
-
+/* 初始化curses库 */
 void initNcurses()
-{
-		
+{	
 	initscr();
 	keypad(stdscr,1);
 	noecho();
 }
-
+/* 蛇节点检测 */
 int hasSnakeNode(int i,int j)
 {
-      	struct Snake *p;
-        p = head;
+    struct Snake *p;
+    p = head;
 	
 	while(p != NULL){
 	
@@ -47,17 +43,16 @@ int hasSnakeNode(int i,int j)
 	}
 	return 0;
 }
-
+/* 食物节点检测 */
 int hasFoodNode(int i,int j)
 {
-	
 	if(food.line == i&& food.list == j){
 		return 1;
 	}	
 	return 0;
 }
-
-void  gameMap()
+/* 游戏地图绘制 */
+void  gameMap(void)
 {
 	int line;
 	int list;
@@ -69,42 +64,37 @@ void  gameMap()
 			}
 			printw("\n");
 		}
-
-
 		if(line>=0 && line<=19){
 
 			for(list=0;list<=20;list++){
-				
+					
 				if(list ==0 || list==20){
-					printw("|");
+						printw("|");
 				}else if(hasSnakeNode(line,list)){
-						printw("[]");
+							printw("[]");
 				}else if(hasFoodNode(line,list)){
-					printw("##");
+						printw("##");
 				}
 				else{
-					
 					printw("  ");
 				}
 
 			}
-			printw("\n");
-		
+			printw("\n");		
 		}
 		if(line == 19){
 			for(list=0;list<20;list++){
 				printw("--");
 			}
 			printw("\n");
-			printw("                           ~By ChenChen!\n");
-		
+			printw("                           ~By ChenChen!\n");							
 		}
 
 	}
 
 }
 
-void addNode()
+void addNode(void)
 {
 	struct Snake *new = (struct Snake *)malloc(sizeof(struct Snake));
 
@@ -144,19 +134,16 @@ void addNode()
 void initFood()
 {
 	int x = rand()%20;
-      	int y = rand()%20;
-	
+    int y = rand()%20;	
 	food.line = x;
-	food.list = y;
-	
+	food.list = y;	
 }
 
 void initSnake()
 {
 	dir = RIGHT;		
 	struct Snake *p;
-	while(head != NULL){
-	
+	while(head != NULL){	
 		p = head;
 		head = head->next;
 		free(p);
@@ -165,13 +152,11 @@ void initSnake()
 	head = (struct Snake *)malloc(sizeof(struct Snake));
 	head->line = LINE0;
 	
-	
 	head->list = LIST0;
 	
 	initFood();
 	
 	head->next = NULL;	
-	
 
 	tail = head;
 
