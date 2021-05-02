@@ -1,5 +1,7 @@
 #include <curses.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <pthread.h>
 
 #define UP    1
 #define DOWN   -1
