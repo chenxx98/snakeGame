@@ -222,44 +222,48 @@ int main(void)
 	int kfd = 0;
 	int keycode;
 	struct timeval tv;
+
 	initNcurses(); 	//curses初始化
 	initSnake(); 	
 	gameMap();  
 
-	fd_set redset; 		//集合
+	fd_set redset; 	 //创建检测集合
+	FD_ZERO(&redset);	//清空初始化
 	int maxfd = kfd; 
-	tv.tv_sec = 1; //等待时间
-	tv.tv_usec = 0; 
+	tv.tv_sec = 0; 	 //等待时间
+	tv.tv_usec = 10000; 
 
 	while(1)
 	{
-		FD_ZERO(&redset);	//清空
+		funSnake(); //贪吃蛇前进
 		//stdin 0
 		FD_SET(kfd,&redset);  //添加
-		funSnake(); //贪吃蛇前进
-		//int select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, struct timeval *timeout);
 		if(select(maxfd+1, &redset, NULL, NULL, &tv) > 0)
 		{
-			if(read(kfd, &keycode, 1) < 0)
-			{
-				perror("read():");
-				exit(-1);
-			}
-			//printf("%d\n",keycode);
-			switch(keycode)
-			{
-				case KEYCODE_L:
-					turn(LEFT);
-					break;
-				case KEYCODE_R:
-					turn(RIGHT);
-					break;
-				case KEYCODE_U:
-					turn(UP);
-					break;
-				case KEYCODE_D:
-					turn(DOWN);
-					break;
+			if(FD_ISSET(kfd,&redset))
+        	{
+				FD_CLR(kfd,&redset);
+				if(read(kfd, &keycode, 1) < 0)
+				{
+					perror("read():");
+					exit(-1);
+				}
+				//printf("%d\n",keycode);
+				switch(keycode)
+				{
+					case KEYCODE_L:
+						turn(LEFT);
+						break;
+					case KEYCODE_R:
+						turn(RIGHT);
+						break;
+					case KEYCODE_U:
+						turn(UP);
+						break;
+					case KEYCODE_D:
+						turn(DOWN);
+						break;
+				}
 			}
 
 		}
