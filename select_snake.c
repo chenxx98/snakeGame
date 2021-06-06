@@ -219,7 +219,7 @@ void turn(int direction)
 int main(void)
 {
 	int ret;
-	int kfd = 0;
+	int kfd = STDIN_FILENO;
 	int keycode;
 	struct timeval tv;
 
@@ -240,7 +240,7 @@ int main(void)
 		FD_SET(kfd,&redset);  //添加
 		if(select(maxfd+1, &redset, NULL, NULL, &tv) > 0)
 		{
-			if(FD_ISSET(kfd,&redset))
+			if(FD_ISSET(kfd,&redset)) //删除
         		{
 				FD_CLR(kfd,&redset);
 				if(read(kfd, &keycode, 1) < 0)
