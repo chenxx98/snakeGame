@@ -241,7 +241,7 @@ int main(void)
 		if(select(maxfd+1, &redset, NULL, NULL, &tv) > 0)
 		{
 			if(FD_ISSET(kfd,&redset))
-        	{
+        		{
 				FD_CLR(kfd,&redset);
 				if(read(kfd, &keycode, 1) < 0)
 				{
