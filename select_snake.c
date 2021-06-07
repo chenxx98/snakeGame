@@ -220,7 +220,7 @@ int main(void)
 {
 	int ret;
 	int kfd = STDIN_FILENO;
-	int keycode;
+	char keycode;
 	struct timeval tv;
 
 	initNcurses(); 	//curses初始化
